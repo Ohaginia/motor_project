@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<robot name="simple_motor" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <material name="white">
+    <color rgba="1.0 1.0 1.0 1.0"/>
+  </material>
+
+  <link name="world"/>
+  <joint name="fixed" type="fixed">
+    <parent link="world"/>
+    <child link="motor"/>
+  </joint>
+
+
+  <link name="motor">
+    <visual>
+      <geometry>
+        <mesh filename="package://motor_description/meshes/motor.STL" />
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="white"/>
+    </visual>
+  </link>
+
+
+  <joint name="joint1" type="continuous">
+    <origin xyz="0.104 0 0.06" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <parent link="motor"/>
+    <child link="shaft"/>
+  </joint>
+
+
+  <link name="shaft">
+    <visual>
+      <geometry>
+        <mesh filename="package://motor_description/meshes/shaft.STL" />
+      </geometry>
+      <origin xyz="-0.104 0 -0.06" rpy="0 0 0"/>
+      <material name="white"/>
+    </visual>
+  </link>
+    
+</robot>
+

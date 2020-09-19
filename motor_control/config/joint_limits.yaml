@@ -1,0 +1,14 @@
+joint_limits:
+    joint1:
+      has_position_limits: false    #位置制限(rad)
+      min_position: 0   
+      max_position: 0   
+      has_velocity_limits: true   #速度制限(rad/s)
+      max_velocity: 2.0 
+      has_acceleration_limits: false  #加速度制限(rad/s^2)
+      max_acceleration: 0.0 
+      has_jerk_limits: false  #加加速度制限(rad/s^3)
+      max_jerk: 0   
+      has_effort_limits: true   #トルク制限(Nm)
+      max_effort: 3
+      min_effort: -3

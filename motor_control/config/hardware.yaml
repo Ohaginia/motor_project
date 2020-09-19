@@ -1,0 +1,5 @@
+motor:
+  hardware_interface:
+     loop_hz: 10 # hz
+     joints:
+       - joint1
