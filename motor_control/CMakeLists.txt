@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   std_srvs
   message_generation
+#  hardware_interface
 )
 
 ## System dependencies are found with CMake's conventions
@@ -108,14 +109,15 @@ add_service_files(
 catkin_package(
   INCLUDE_DIRS 
     include
-#  LIBRARIES 
-#    robot_hardware_interface
+  LIBRARIES 
+    robot_hardware_interface
   CATKIN_DEPENDS 
     roscpp 
     rospy 
     std_msgs
     std_srvs
     controller_manager
+#    hardware_interface
 )
 
 ###########
@@ -129,11 +131,19 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(robot_hardware_interface src/robot_hardware_interface.cpp)
+#install(DIRECTORY include/${PROJECT_NAME}/
+#DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+#FILES_MATCHING PATTERN "*.h"
+#PATTERN ".svn" EXCLUDE
+#)
+
+#add_executable(robot_hardware_interface src/robot_hardware_interface.cpp)
+add_library(robot_hardware_interface  src/robot_hardware_interface.cpp)
 target_link_libraries(robot_hardware_interface ${catkin_LIBRARIES})
 
 ## Declare a C++ library
-#add_library(robot_hardware_interface  src/robot_hardaware_interface.cpp)
+#add_dependencies(robot_hardware_interface)
+#target_link_libraries(robot_hardaware_interface ${catkin_LIBRARIES})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -144,8 +154,8 @@ target_link_libraries(robot_hardware_interface ${catkin_LIBRARIES})
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/motor_control_node.cpp)
-#add_executable(single_joint_hardware_interface src/robot_hardware_interface_node.cpp)
-
+add_executable(robot_hardware_interface_node src/robot_hardware_interface_node.cpp)
+#add_dependencies(robot_hardware_interface_node robot_hardware_interface)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -156,14 +166,30 @@ target_link_libraries(robot_hardware_interface ${catkin_LIBRARIES})
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-#add_dependencies(robot_hardware_interface )
 
 ## Specify libraries to link a library or executable target against
-#target_link_libraries(robot_hardaware_interface ${catkin_LIBRARIES})
+target_link_libraries(robot_hardware_interface_node 
+      robot_hardware_interface 
+      ${catkin_LIBRARIES})
 
 #############
 ## Install ##
 #############
+
+install(TARGETS
+    robot_hardware_interface
+  LIBRARY DESTINATION
+    ${CATKIN_PACKAGE_LIB_DESTINATION}
+)
+
+install(TARGETS
+    robot_hardware_interface_node
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+install(DIRECTORY include/motor_control/   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
+
 
 # all install targets should use catkin DESTINATION variables
 # See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
@@ -190,11 +216,7 @@ target_link_libraries(robot_hardware_interface ${catkin_LIBRARIES})
 # )
 
 ## Mark cpp header files for installation
-# install(DIRECTORY include/${PROJECT_NAME}/
-#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-#   FILES_MATCHING PATTERN "*.h"
-#   PATTERN ".svn" EXCLUDE
-# )
+
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES
