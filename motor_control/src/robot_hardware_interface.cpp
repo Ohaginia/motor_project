@@ -190,15 +190,15 @@ void ROBOTHardwareInterface::write(ros::Duration elapsed_time) {
 	pub.publish(joints_pub);		
 }
 
-int main(int argc, char** argv)
-{
-    ros::init(argc, argv, "robot_hardware_interface");
-    ros::NodeHandle nh;
-    ros::MultiThreadedSpinner spinner(2); 
-//    if(argc>1)
-//        ROBOTHardwareInterface ROBOT(nh,atoi(argv[1]));
-//    else
-        ROBOTHardwareInterface ROBOT(nh);
-    spinner.spin();
-    return 0;
-}
+//int main(int argc, char** argv)
+//{
+//    ros::init(argc, argv, "robot_hardware_interface");
+//    ros::NodeHandle nh;
+//    ros::MultiThreadedSpinner spinner(2); 
+////    if(argc>1)
+////        ROBOTHardwareInterface ROBOT(nh,atoi(argv[1]));
+////    else
+//        ROBOTHardwareInterface ROBOT(nh);
+//    spinner.spin();
+//    return 0;
+//}

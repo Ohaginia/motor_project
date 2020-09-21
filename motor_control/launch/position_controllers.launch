@@ -9,7 +9,7 @@
     <arg name="gui" default="true" />
     <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
     <param name="use_gui" value="$(arg gui)"/>
-    <node name="robot_hardware_interface" pkg="motor_control" type="robot_hardware_interface" output="screen"/>
+    <node name="robot_hardware_interface" pkg="motor_control" type="robot_hardware_interface_node" args="1 1" output="screen"/>
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
     <node name="rviz" pkg="rviz" type="rviz"/> 
