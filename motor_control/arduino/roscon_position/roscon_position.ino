@@ -20,23 +20,23 @@ void ros_control_cb(const std_msgs::Float32MultiArray& roscon_value);
 ros::NodeHandle  nh;
 
 /* ロスコントロールから制御 */
-ros::Subscriber<std_msgs::Float32MultiArray> ros_control("ros_control_value", ros_control_cb);
+ros::Subscriber<std_msgs::Float32MultiArray> ros_control("/ros_control_value", ros_control_cb);
 
 /*　位置情報配信トピック　*/
 std_msgs::Int32MultiArray position_data;
-ros::Publisher position_pub("position", &position_data);
+ros::Publisher position_pub("/position", &position_data);
 
 /*　速度情報配信トピック　*/
 std_msgs::Float32MultiArray velocity_data;
-ros::Publisher velocity_pub("velocity", &velocity_data);
+ros::Publisher velocity_pub("/velocity", &velocity_data);
 
 /*　トルク情報配信トピック　*/
 std_msgs::Float32MultiArray effort_data;
-ros::Publisher effort_pub("effort", &effort_data);
+ros::Publisher effort_pub("/effort", &effort_data);
 
 /*　電圧情報配信トピック　*/
 std_msgs::Float32 voltage_data;
-ros::Publisher voltage_pub("voltage", &voltage_data);
+ros::Publisher voltage_pub("/voltage", &voltage_data);
 /******/
 
 const int num_motor=1;
