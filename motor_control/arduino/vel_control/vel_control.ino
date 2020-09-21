@@ -18,16 +18,17 @@ void odrive_cb(const std_msgs::Float32MultiArray& joy_msg);
 
 /* ROS */
 ros::NodeHandle  nh;
-ros::Subscriber<std_msgs::Float32MultiArray> joy_sub("joy_array", odrive_cb);
+
+ros::Subscriber<std_msgs::Float32MultiArray> joy_sub("/joy_array", odrive_cb);
 
 std_msgs::Int32MultiArray position_data;
-ros::Publisher position_pub("position", &position_data);
+ros::Publisher position_pub("/position", &position_data);
 
 std_msgs::Float32MultiArray velocity_data;
-ros::Publisher velocity_pub("velocity", &velocity_data);
+ros::Publisher velocity_pub("/velocity", &velocity_data);
 
 std_msgs::Float32 voltage_data;
-ros::Publisher voltage_pub("voltage", &voltage_data);
+ros::Publisher voltage_pub("/voltage", &voltage_data);
 /******/
 
 float vel1,vel2;
