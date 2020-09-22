@@ -8,7 +8,7 @@ std_msgs::Float32MultiArray eff;
 
 bool state_server(motor_control::Floats_array::Request  &req, motor_control::Floats_array::Response &res)
 {
-    swich(req){
+    switch(req.req){
         case 1: {
                     int motor_num= sizeof(pos.data)/sizeof(pos.data[0]);
                     for(int i=0; i< motor_num; i++)
@@ -38,27 +38,28 @@ bool state_server(motor_control::Floats_array::Request  &req, motor_control::Flo
 }
 
 void position_cb(const std_msgs::Float32MultiArray& position_msg){
-    int motor_num=sizeof(position_msg)/sizeof(position_msg[0]);
+    int motor_num=sizeof(position_msg.data)/sizeof(position_msg.data[0]);
     pos.data.resize(motor_num);
     for(int i=0 ; i< motor_num; i++){
-        pos.data[i]=position_msg[i];
+        pos.data[i]=position_msg.data[i];
     }
 }
 
 void velocity_cb(const std_msgs::Float32MultiArray& velocity_msg){
-    int motor_num=sizeof(velocity_msg)/sizeof(velocity_msg[0]);
+    int motor_num=sizeof(velocity_msg.data)/sizeof(velocity_msg.data[0]);
     vel.data.resize(motor_num);
     for(int i=0 ; i< motor_num; i++){
-        vel.data[i]=velocity_msg[i];
+        vel.data[i]=velocity_msg.data[i];
         
     }
 }
 
 void effort_cb(const std_msgs::Float32MultiArray& effort_msg){
-    int motor_num=sizeof(effort_msg)/sizeof(effort_msg[0]);
+    int motor_num=sizeof(effort_msg.data)/sizeof(effort_msg.data[0]);
     eff.data.resize(motor_num);
     for(int i=0 ; i< motor_num; i++){
-        eff.data[i]=effort_msg[i];
+        eff.data[i]=effort_msg.data[i];
+    }
 }
 
 int main(int argc, char **argv)
@@ -67,10 +68,8 @@ int main(int argc, char **argv)
   ros::NodeHandle nh;
 
   ros::ServiceServer state_service = nh.advertiseService("/read_joint_state",state_server);
-  ros::Subscriber position_sub = n.subscribe("/position", 10, position_cb);
-  ros::Subscriber velocity_sub = n.subscribe("/velocity", 10, velocity_cb);
-  ros::Subscriber effort_sub = n.subscribe("/effort", 10, effort_cb);
+  ros::Subscriber position_sub = nh.subscribe("/position", 10, position_cb);
+  ros::Subscriber velocity_sub = nh.subscribe("/velocity", 10, velocity_cb);
+  ros::Subscriber effort_sub = nh.subscribe("/effort", 10, effort_cb);
   ros::spin();
-
-  return 0;
 }

@@ -172,6 +172,10 @@ target_link_libraries(robot_hardware_interface_node
       robot_hardware_interface 
       ${catkin_LIBRARIES})
 
+add_executable(arduino_state_server src/arduino_interface.cpp)
+add_dependencies(arduino_state_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(arduino_state_server ${catkin_LIBRARIES})
+
 #############
 ## Install ##
 #############
@@ -189,6 +193,7 @@ install(TARGETS
 )
 
 install(DIRECTORY include/motor_control/   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
+
 
 
 # all install targets should use catkin DESTINATION variables
