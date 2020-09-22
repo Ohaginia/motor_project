@@ -23,7 +23,7 @@ ros::NodeHandle  nh;
 ros::Subscriber<std_msgs::Float32MultiArray> ros_control("/ros_control_value", ros_control_cb);
 
 /*　位置情報配信トピック　*/
-std_msgs::Int32MultiArray position_data;
+std_msgs::Float32MultiArray position_data;
 ros::Publisher position_pub("/position", &position_data);
 
 /*　速度情報配信トピック　*/
