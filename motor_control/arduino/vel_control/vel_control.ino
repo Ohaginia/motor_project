@@ -65,8 +65,8 @@ void setup() {
   odrive.odrive_reboot();
   for(int i=0; i< 2 ; i++){
     odrive.odrive_init(i);
+    delay(300);
   }
-  delay(3000);
   ros_init1();
 }
 

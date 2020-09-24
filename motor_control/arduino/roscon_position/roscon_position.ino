@@ -59,24 +59,26 @@ void array_init(std_msgs::Float32MultiArray& data, int array){
 }
 void ros_init()
 {
-    array_init(position_data,2);
-    array_init(velocity_data,2);
-    array_init(effort_data,2);
+    array_init(position_data,num_motor);
+    array_init(velocity_data,num_motor);
+    array_init(effort_data,num_motor);
     nh.getHardware()->setBaud(115200);
     nh.initNode();
     nh.subscribe(ros_control);
     nh.advertise(position_pub);
     nh.advertise(velocity_pub);
     nh.advertise(voltage_pub);
+    nh.advertise(effort_pub);
 }
 
 
 void setup() {
   odrive.odrive_reboot();
-  ros_init();
   for(int motor=0; motor< num_motor; motor++){
-     odrive.odrive_init(motor);
+     odrive.odrive_init(motor,10000.f);
   }
+  delay(3000);
+  ros_init();
 }
 
 void loop() {
@@ -97,9 +99,9 @@ void loop() {
 }
 
 void ros_control_cb(const std_msgs::Float32MultiArray& roscon_value){
-  float pos[2]={};
+  float pos[num_motor]={};
   for(int motor=0; motor< num_motor; motor++){
-        pos[motor]=(roscon_value.data[motor]*(2000/pi));
+        pos[motor]=(roscon_value.data[motor]*(4000/pi));
         odrive.SetPosition(motor,pos[motor]);
   }
 }

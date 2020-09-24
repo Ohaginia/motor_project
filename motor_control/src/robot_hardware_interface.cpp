@@ -7,7 +7,7 @@ ROBOTHardwareInterface::ROBOTHardwareInterface(ros::NodeHandle& nh, int control_
     loop_hz_=5;                                                                         //ループ周波数の定義
     ros::Duration update_freq = ros::Duration(1.0/loop_hz_);                            //ループ周期の定義
 	
-	pub = nh_.advertise<rospy_tutorials::Floats>("/ros_control_value",10);              // ros_controlで計算された値をパブリッシュする
+	pub = nh_.advertise<std_msgs::Float32MultiArray>("/ros_control_value",10);              // ros_controlで計算された値をパブリッシュする
 	client = nh_.serviceClient<motor_control::Floats_array>("/read_joint_state");       // 実機の情報を配列で受け取るサービス
 	
     my_control_loop_ = nh_.createTimer(update_freq, &ROBOTHardwareInterface::update, this);   //update関数を定周期(update_freq)で呼び出すタイマー

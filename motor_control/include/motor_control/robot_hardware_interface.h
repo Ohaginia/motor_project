@@ -16,7 +16,7 @@
 #include <ros/ros.h>
 
 /*通信用*/
-#include <rospy_tutorials/Floats.h>
+#include <std_msgs/Float32MultiArray.h>
 #include <motor_control/Floats_array.h>
 
 #include<angles/angles.h>
@@ -48,7 +48,7 @@ class ROBOTHardwareInterface : public hardware_interface::RobotHW
 
         ros::Publisher               pub;            //jointの制御指令値を出版
         ros::ServiceClient           client;         //関節の角度情報を
-        rospy_tutorials::Floats      joints_pub;     
+        std_msgs::Float32MultiArray      joints_pub;     
         motor_control::Floats_array  joint_read;
 
         int num_joints_;                       //ジョイント数

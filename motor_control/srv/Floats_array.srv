@@ -1,3 +1,3 @@
-int8 req
+int64 req
 ---
-float32[] res
+float64[] res
