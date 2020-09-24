@@ -171,11 +171,11 @@ add_executable(robot_hardware_interface_node src/robot_hardware_interface_node.c
 target_link_libraries(robot_hardware_interface_node 
       robot_hardware_interface 
       ${catkin_LIBRARIES})
-
+add_executable(joy_array_pub src/joy_array.cpp)
 add_executable(arduino_state_server src/arduino_interface.cpp)
 add_dependencies(arduino_state_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(arduino_state_server ${catkin_LIBRARIES})
-
+target_link_libraries(joy_array_pub ${catkin_LIBRARIES} )
 #############
 ## Install ##
 #############
