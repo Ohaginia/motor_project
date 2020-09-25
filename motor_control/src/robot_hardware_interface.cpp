@@ -7,7 +7,9 @@ ROBOTHardwareInterface::ROBOTHardwareInterface(ros::NodeHandle& nh, int control_
     loop_hz_=5;                                                                         //ループ周波数の定義
     ros::Duration update_freq = ros::Duration(1.0/loop_hz_);                            //ループ周期の定義
 	
-	pub = nh_.advertise<std_msgs::Float32MultiArray>("/ros_control_value",10);              // ros_controlで計算された値をパブリッシュする
+	roscon_position_pub = nh_.advertise<std_msgs::Float32MultiArray>("/ros_control_position",10);              // ros_controlで計算された値をパブリッシュする
+	roscon_velocity_pub = nh_.advertise<std_msgs::Float32MultiArray>("/ros_control_velocity",10);              // ros_controlで計算された値をパブリッシュする
+	roscon_effort_pub = nh_.advertise<std_msgs::Float32MultiArray>("/ros_control_effort",10);              // ros_controlで計算された値をパブリッシュする
 	client = nh_.serviceClient<motor_control::Floats_array>("/read_joint_state");       // 実機の情報を配列で受け取るサービス
 	
     my_control_loop_ = nh_.createTimer(update_freq, &ROBOTHardwareInterface::update, this);   //update関数を定周期(update_freq)で呼び出すタイマー
@@ -160,6 +162,8 @@ void ROBOTHardwareInterface::write(ros::Duration elapsed_time) {
             for(int i=0; i<num_joints_; i++){
 	            joints_pub.data.push_back(joint_position_command_[i]);
             	ROS_INFO("Cmd: %.2f",joint_position_command_[i]);
+                roscon_position_pub.publish(joints_pub);		
+
             }
             break;
         case 2:
@@ -168,6 +172,8 @@ void ROBOTHardwareInterface::write(ros::Duration elapsed_time) {
             for(int i=0; i<num_joints_; i++){
 	            joints_pub.data.push_back(joint_velocity_command_[i]);
             	ROS_INFO("Cmd: %.2f",joint_velocity_command_[i]);
+                roscon_velocity_pub.publish(joints_pub);		
+
             }
             break;
         case 3:
@@ -176,6 +182,7 @@ void ROBOTHardwareInterface::write(ros::Duration elapsed_time) {
             for(int i=0; i<num_joints_; i++){
 	            joints_pub.data.push_back(joint_effort_command_[i]);
             	ROS_INFO("Cmd: %.2f",joint_effort_command_[i]);
+                roscon_effort_pub.publish(joints_pub);		
             }
             break;
         default:
@@ -184,10 +191,10 @@ void ROBOTHardwareInterface::write(ros::Duration elapsed_time) {
             for(int i=0; i<num_joints_; i++){
 	            joints_pub.data.push_back(joint_position_command_[i]);
             	ROS_INFO("Cmd: %.2f",joint_position_command_[i]);
+            	roscon_position_pub.publish(joints_pub);		
             }
             break;
    }
-	pub.publish(joints_pub);		
 }
 
 //int main(int argc, char** argv)

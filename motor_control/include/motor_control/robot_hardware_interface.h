@@ -46,7 +46,9 @@ class ROBOTHardwareInterface : public hardware_interface::RobotHW
 		joint_limits_interface::VelocityJointSoftLimitsInterface velocity_joint_limits_interface_;
         
 
-        ros::Publisher               pub;            //jointの制御指令値を出版
+        ros::Publisher               roscon_position_pub;            //jointの制御指令値を出版
+        ros::Publisher               roscon_velocity_pub;            //jointの制御指令値を出版
+        ros::Publisher               roscon_effort_pub;            //jointの制御指令値を出版
         ros::ServiceClient           client;         //関節の角度情報を
         std_msgs::Float32MultiArray      joints_pub;     
         motor_control::Floats_array  joint_read;
