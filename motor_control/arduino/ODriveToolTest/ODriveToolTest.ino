@@ -8,30 +8,59 @@ template<>        inline Print& operator <<(Print &obj, float arg) { obj.print(a
 ODriveTool odrive(Serial2);
 
 void setup() {
-  //odrive.odrive_reboot();
-  odrive.odrive_init(0);
-  //odrive.odrive_init(1);  
+  Serial.begin(115200);
+  odrive.odrive_reboot();
+  for(int i=1; i<2 ;i++){
+//     odrive.odrive_init(i,5000);
+      int requested_state;
+
+      requested_state = ODriveTool::AXIS_STATE_MOTOR_CALIBRATION;
+      Serial << "Axis" << i << ": Requesting state " << requested_state << '\n';
+      odrive.run_state(i, requested_state, true);
+
+      requested_state = ODriveTool::AXIS_STATE_ENCODER_OFFSET_CALIBRATION;
+      Serial << "Axis" << i << ": Requesting state " << requested_state << '\n';
+      odrive.run_state(i, requested_state, true);
+     delay(1000);
+  }
 }
 
 void loop() {
-//  voltage_data.data=odrive.get_voltage();
-//  voltage_pub.publish(&voltage_data);
-//
-//  for(int motor=0; motor<2 ;motor++){
-//    position_data.data[motor]=odrive.get_position(motor);
-//    velocity_data.data[motor]=odrive.get_velocity(motor);
-//  }
-//  position_pub.publish(&position_data);
-//  velocity_pub.publish(&velocity_data);
-//  
-//  nh.spinOnce();
-//  delay(500);
-}
 
-//void odrive_cb(const std_msgs::Float32MultiArray& joy_msg){
-//    joy_msg.data[1] > 0 ? vel1=pow((joy_msg.data[1]*3.0),2)*(40000.0/9.0) : vel1=pow((joy_msg.data[1]*3.0),2)*(-40000.0/9.0);
-//    joy_msg.data[4] > 0 ? vel2=pow((joy_msg.data[4]*3.0),2)*(40000.0/9.0) : vel2=pow((joy_msg.data[4]*3.0),2)*(-40000.0/9.0);
+  if (Serial.available()) {
+    char c = Serial.read();
+        if (c == 'p') {
+      Serial.println("Executing test move");
+      while (true) {
+        Serial << "Pos1:" << odrive.get_position(1) << '\n';
+        delay(5);
+      }
+    }
+    // Sinusoidal test move
+//    if (c == 'p') {
+//      Serial.println("Executing test move");
+//      for (float ph = 0.0f; ph < 6.28318530718f; ph += 0.01f) {
+//        float pos_m0 = 20000 * cos(ph);
+//        float pos_m1 = 20000 * sin(ph);
+//        odrive.SetPosition(0, pos_m0);
+//        odrive.SetPosition(1, pos_m1);
+//        Serial << "Pos0:" << odrive.get_position(0) << '\t';
+//        Serial << "Pos1:" << odrive.get_position(1) << '\n';
+//        delay(5);
+//      }
+//    }
 //
-//    odrive.SetVelocity(0,vel1);
-//    odrive.SetVelocity(1,vel2);
-//}
+//    if (c == 'v') {
+//      Serial.println("Executing test move");
+//      for (float ph = 0.0f; ph < 6.28318530718f; ph += 0.01f) {
+//        float pos_m0 = 30000 * cos(ph);
+//        float pos_m1 = 30000 * sin(ph);
+//        odrive.SetPosition(0, pos_m0);
+//        odrive.SetPosition(1, pos_m1);
+//        Serial << "vel0:" << odrive.get_velocity(0) << '\t';
+//        Serial << "vel1:" << odrive.get_velocity(1) << '\n';
+//        delay(5);
+//      }
+//    }
+  }
+}

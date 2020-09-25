@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 #include "motor_control/Floats_array.h"
 #include <std_msgs/Float32MultiArray.h>
+#include <angles/angles.h>
 
 std_msgs::Float32MultiArray pos;
 std_msgs::Float32MultiArray vel;
@@ -39,7 +40,7 @@ bool state_server(motor_control::Floats_array::Request  &req, motor_control::Flo
 
 void position_cb(const std_msgs::Float32MultiArray& position_msg){
     for(int i=0 ; i< motor_num; i++){
-        pos.data[i]=position_msg.data[i];
+        pos.data[i]=angles::from_degrees(position_msg.data[i]);
     }
 }
 

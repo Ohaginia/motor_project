@@ -20,7 +20,7 @@ void ros_control_cb(const std_msgs::Float32MultiArray& roscon_value);
 ros::NodeHandle  nh;
 
 /* ロスコントロールから制御 */
-ros::Subscriber<std_msgs::Float32MultiArray> ros_control("/ros_control_value", ros_control_cb);
+ros::Subscriber<std_msgs::Float32MultiArray> ros_control("/ros_control_position", ros_control_cb);
 
 /*　位置情報配信トピック　*/
 std_msgs::Float32MultiArray position_data;
