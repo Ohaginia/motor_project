@@ -4,7 +4,7 @@ joint_limits:
       min_position: 0   
       max_position: 0   
       has_velocity_limits: true   #速度制限(rad/s)
-      max_velocity: 20.0 
+      max_velocity: 100.0 
       has_acceleration_limits: false  #加速度制限(rad/s^2)
       max_acceleration: 0.0 
       has_jerk_limits: false  #加加速度制限(rad/s^3)

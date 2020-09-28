@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+    <rosparam file="$(find motor_control)/config/hardware.yaml" command="load"/>
+    <rosparam file="$(find motor_control)/config/controller.yaml" command="load"/>
+    <rosparam file="$(find motor_control)/config/joint_limits.yaml" command="load"/>
+    <!--node name="subscriber_py" pkg="ros_control_example" type="joints_receive_from_arduino.py" output="screen"/--> 
+
+    <arg name="model" default="$(find motor_description)/urdf/simple_motor.urdf.xacro"/>
+    <arg name="gui" default="true" />
+    <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+    <param name="use_gui" value="$(arg gui)"/>
+    <node name="robot_hardware_interface" pkg="motor_control" type="robot_hardware_interface_node" args="1 2" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="motor_state_server" pkg="motor_control" type="arduino_state_server" />
+
+    <node name="rviz" pkg="rviz" type="rviz"/> 
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+        args="
+            /simple_motor/controller/state
+            /simple_motor/controller/vel_position/joint1
+        "/>
+
+</launch>

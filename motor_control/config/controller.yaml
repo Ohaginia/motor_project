@@ -12,3 +12,8 @@ simple_motor:
         type: effort_controllers/JointPositionController
         joint: joint1
         pid: {p: 0.0, i: 0.0, d: 0.0}
+    vel_position:
+      joint1:
+        type: velocity_controllers/JointPositionController
+        joint: joint1
+        pid: {p: 3.0, i: 0.1, d: 0.4}
