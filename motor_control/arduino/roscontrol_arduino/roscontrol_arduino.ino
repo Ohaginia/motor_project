@@ -10,17 +10,23 @@
 #include <std_msgs/Empty.h>
 #include <ros/time.h>
 /******/
+const int encoder_cpr=4000;
+const int kv=100;
 
 // ODrive object
 ODriveTool odrive(Serial2);
 
-void ros_control_cb(const std_msgs::Float32MultiArray& roscon_value);
+void ros_position_cb(const std_msgs::Float32MultiArray& roscon_value);
+void ros_velocity_cb(const std_msgs::Float32MultiArray& roscon_value);
+void ros_effort_cb(const std_msgs::Float32MultiArray& roscon_value);
 
 /* ROS */
 ros::NodeHandle  nh;
 
 /* ロスコントロールから制御 */
-ros::Subscriber<std_msgs::Float32MultiArray> ros_control("/ros_control_position", ros_control_cb);
+ros::Subscriber<std_msgs::Float32MultiArray> ros_control_position("/ros_control_position", ros_position_cb);
+ros::Subscriber<std_msgs::Float32MultiArray> ros_control_velocity("/ros_control_velocity", ros_velocity_cb);
+ros::Subscriber<std_msgs::Float32MultiArray> ros_control_effort("/ros_control_effort", ros_effort_cb);
 
 /*　位置情報配信トピック　*/
 std_msgs::Float32MultiArray position_data;
@@ -64,7 +70,9 @@ void ros_init()
     array_init(effort_data,num_motor);
     nh.getHardware()->setBaud(115200);
     nh.initNode();
-    nh.subscribe(ros_control);
+    nh.subscribe(ros_control_position);
+    nh.subscribe(ros_control_velocity);
+    nh.subscribe(ros_control_effort);
     nh.advertise(position_pub);
     nh.advertise(velocity_pub);
     nh.advertise(voltage_pub);
@@ -95,13 +103,29 @@ void loop() {
   effort_pub.publish(&effort_data);
 
   nh.spinOnce();
-  delay(500);
+  //delay(500);
 }
 
-void ros_control_cb(const std_msgs::Float32MultiArray& roscon_value){
+void ros_position_cb(const std_msgs::Float32MultiArray& roscon_value){
   float pos[num_motor]={};
   for(int motor=0; motor< num_motor; motor++){
-        pos[motor]=(roscon_value.data[motor]*(4000/(2*pi)));
+        pos[motor]=(roscon_value.data[motor]*(encoder_cpr/pi));
         odrive.SetPosition(motor,pos[motor]);
+  }
+}
+
+void ros_velocity_cb(const std_msgs::Float32MultiArray& roscon_value){
+  float vel[num_motor]={};
+  for(int motor=0; motor< num_motor; motor++){
+        vel[motor]=roscon_value.data[motor]*(encoder_cpr/pi);
+        odrive.SetVelocity(motor,vel[motor]);
+  }
+}
+
+void ros_effort_cb(const std_msgs::Float32MultiArray& roscon_value){
+  float current[num_motor]={};
+  for(int motor=0; motor< num_motor; motor++){
+        current[motor]=(roscon_value.data[motor]*kv)/8.27;
+        odrive.SetCurrent(motor,current[motor]);
   }
 }

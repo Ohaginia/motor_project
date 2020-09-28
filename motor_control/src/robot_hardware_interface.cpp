@@ -161,7 +161,7 @@ void ROBOTHardwareInterface::write(ros::Duration elapsed_time) {
 	        joints_pub.data.clear();
             for(int i=0; i<num_joints_; i++){
 	            joints_pub.data.push_back(joint_position_command_[i]);
-            	ROS_INFO("Cmd: %.2f",joint_position_command_[i]);
+            	ROS_INFO("Pos Cmd: %.2f",joint_position_command_[i]);
                 roscon_position_pub.publish(joints_pub);		
 
             }
@@ -171,7 +171,7 @@ void ROBOTHardwareInterface::write(ros::Duration elapsed_time) {
 	        joints_pub.data.clear();
             for(int i=0; i<num_joints_; i++){
 	            joints_pub.data.push_back(joint_velocity_command_[i]);
-            	ROS_INFO("Cmd: %.2f",joint_velocity_command_[i]);
+            	ROS_INFO("Vel Cmd: %.2f",joint_velocity_command_[i]);
                 roscon_velocity_pub.publish(joints_pub);		
 
             }
@@ -181,7 +181,7 @@ void ROBOTHardwareInterface::write(ros::Duration elapsed_time) {
 	        joints_pub.data.clear();
             for(int i=0; i<num_joints_; i++){
 	            joints_pub.data.push_back(joint_effort_command_[i]);
-            	ROS_INFO("Cmd: %.2f",joint_effort_command_[i]);
+            	ROS_INFO("Eff Cmd: %.2f",joint_effort_command_[i]);
                 roscon_effort_pub.publish(joints_pub);		
             }
             break;
@@ -190,7 +190,7 @@ void ROBOTHardwareInterface::write(ros::Duration elapsed_time) {
 	        joints_pub.data.clear();
             for(int i=0; i<num_joints_; i++){
 	            joints_pub.data.push_back(joint_position_command_[i]);
-            	ROS_INFO("Cmd: %.2f",joint_position_command_[i]);
+            	ROS_INFO("Pos Cmd: %.2f",joint_position_command_[i]);
             	roscon_position_pub.publish(joints_pub);		
             }
             break;

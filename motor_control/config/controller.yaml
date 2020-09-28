@@ -3,7 +3,12 @@ simple_motor:
     state:
       type: joint_state_controller/JointStateController
       publish_rate: 50
-    position:
+    pos_position:
       joint1:
         type: position_controllers/JointPositionController
         joint: joint1
+    eff_position:
+      joint1:
+        type: effort_controllers/JointPositionController
+        joint: joint1
+        pid: {p: 0.0, i: 0.0, d: 0.0}
