@@ -7,6 +7,9 @@ simple_motor:
       joint1:
         type: position_controllers/JointPositionController
         joint: joint1
+      joint2:
+        type: position_controllers/JointPositionController
+        joint: joint2
     eff_position:
       joint1:
         type: effort_controllers/JointPositionController

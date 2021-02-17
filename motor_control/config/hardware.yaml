@@ -3,3 +3,4 @@ motor:
      loop_hz: 10 # hz
      joints:
        - joint1
+       - joint2
